@@ -4,6 +4,14 @@ import { ArrowLeft, ArrowUp } from 'lucide-react';
 import './styles.css';
 
 const A = '/assets/';
+const DETAIL_IMAGE_WIDTH = 1920;
+const DETAIL_SLICE_HEIGHT = 4000;
+
+const createDetailSlices = (prefix, count, totalHeight) => Array.from({ length: count }, (_, index) => ({
+  src: `${prefix}-${String(index + 1).padStart(2, '0')}.jpg`,
+  width: DETAIL_IMAGE_WIDTH,
+  height: Math.min(DETAIL_SLICE_HEIGHT, totalHeight - (index * DETAIL_SLICE_HEIGHT)),
+}));
 
 if ('scrollRestoration' in window.history) {
   window.history.scrollRestoration = 'manual';
@@ -178,8 +186,24 @@ const services = [
 ];
 
 const works = [
-  { slug: 'corporate-site', image: 'transwarp-card.png', detailImage: 'transwarp-detail.jpg', title: '星环科技官网改版升级', year: '2024', description: '为企业品牌制作官方网站，强化品牌形象与业务可信度。', tags: ['策划', '网页设计', '前端开发', 'WordPress'] },
-  { slug: 'education-landing', image: 'transwarp-data-card.png', detailImage: 'transwarp-data-detail.jpg', title: '星环大数据开发与治理平台', year: '2023', description: '为教育服务制作营销型落地页，突出核心卖点与转化路径。', tags: ['策划', '网页设计', '前端开发', 'WordPress'] },
+  {
+    slug: 'corporate-site',
+    image: 'transwarp-card.png',
+    detailImages: createDetailSlices('transwarp-detail', 6, 23900),
+    title: '星环科技官网改版升级',
+    year: '2024',
+    description: '为企业品牌制作官方网站，强化品牌形象与业务可信度。',
+    tags: ['策划', '网页设计', '前端开发', 'WordPress'],
+  },
+  {
+    slug: 'education-landing',
+    image: 'transwarp-data-card.png',
+    detailImages: createDetailSlices('transwarp-data-detail', 5, 19040),
+    title: '星环大数据开发与治理平台',
+    year: '2023',
+    description: '为教育服务制作营销型落地页，突出核心卖点与转化路径。',
+    tags: ['策划', '网页设计', '前端开发', 'WordPress'],
+  },
   { slug: 'design-company', image: 'kma.jpg', title: '设计公司官网', description: '为设计公司制作企业官网，呈现专业服务与品牌调性。', tags: ['策划', '网页设计', '前端开发', 'WordPress'] },
   { slug: 'saas-landing', image: 'smartlcloud.jpg', title: 'SaaS 产品落地页', description: '为云服务产品制作介绍页面，清晰表达产品价值。', tags: ['策划', '网页设计', '前端开发'] },
   { slug: 'manufacturing-site', image: 'moridenki.jpg', title: '制造企业官网', description: '为制造企业制作官方网站，整理服务信息与企业实力展示。', tags: ['策划', '网页设计', '前端开发', 'WordPress'] },
@@ -352,6 +376,7 @@ function WorkDetail({ work }) {
   };
 
   const otherWorks = featuredWorks.filter((item) => item.slug !== work.slug);
+  const detailImages = work.detailImages || [{ src: work.detailImage || work.image }];
 
   return (
     <main className="work-detail-page">
@@ -382,7 +407,17 @@ function WorkDetail({ work }) {
       <section className="work-detail-main">
         <div className="work-detail-inner">
           <figure className="work-detail-visual">
-            <img src={`${A}${work.detailImage || work.image}`} alt={work.title} />
+            {detailImages.map((image, index) => (
+              <img
+                src={`${A}${image.src}`}
+                alt={index === 0 ? work.title : ''}
+                loading={index === 0 ? 'eager' : 'lazy'}
+                decoding="async"
+                width={image.width}
+                height={image.height}
+                key={image.src}
+              />
+            ))}
           </figure>
         </div>
       </section>

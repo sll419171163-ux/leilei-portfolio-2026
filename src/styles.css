@@ -875,12 +875,16 @@ img { display: block; width: 100%; max-width: 100%; }
 .work-detail-visual {
   position: relative;
   margin: 0;
+  overflow: hidden;
+  border: 1px solid #D9D4CA;
+  line-height: 0;
 }
 
 .work-detail-visual img {
+  display: block;
   width: 100%;
   height: auto;
-  border: 1px solid #D9D4CA;
+  border: 0;
   object-fit: contain;
 }
 

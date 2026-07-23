@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { createRoot } from 'react-dom/client';
-import { ArrowLeft, ArrowUp, Instagram } from 'lucide-react';
+import { ArrowLeft, ArrowUp } from 'lucide-react';
 import './styles.css';
 
 const A = '/assets/';
@@ -178,8 +178,8 @@ const services = [
 ];
 
 const works = [
-  { slug: 'corporate-site', image: 'senzu.jpg', title: '企业官网设计', description: '为企业品牌制作官方网站，强化品牌形象与业务可信度。', tags: ['策划', '网页设计', '前端开发', 'WordPress'] },
-  { slug: 'education-landing', image: 'tokuyobi.jpg', title: '教育服务落地页', description: '为教育服务制作营销型落地页，突出核心卖点与转化路径。', tags: ['策划', '网页设计', '前端开发', 'WordPress'] },
+  { slug: 'corporate-site', image: 'transwarp-card.png', detailImage: 'transwarp-detail.jpg', title: '星环科技官网改版升级', year: '2024', description: '为企业品牌制作官方网站，强化品牌形象与业务可信度。', tags: ['策划', '网页设计', '前端开发', 'WordPress'] },
+  { slug: 'education-landing', image: 'transwarp-data-card.png', detailImage: 'transwarp-data-detail.jpg', title: '星环大数据开发与治理平台', year: '2023', description: '为教育服务制作营销型落地页，突出核心卖点与转化路径。', tags: ['策划', '网页设计', '前端开发', 'WordPress'] },
   { slug: 'design-company', image: 'kma.jpg', title: '设计公司官网', description: '为设计公司制作企业官网，呈现专业服务与品牌调性。', tags: ['策划', '网页设计', '前端开发', 'WordPress'] },
   { slug: 'saas-landing', image: 'smartlcloud.jpg', title: 'SaaS 产品落地页', description: '为云服务产品制作介绍页面，清晰表达产品价值。', tags: ['策划', '网页设计', '前端开发'] },
   { slug: 'manufacturing-site', image: 'moridenki.jpg', title: '制造企业官网', description: '为制造企业制作官方网站，整理服务信息与企业实力展示。', tags: ['策划', '网页设计', '前端开发', 'WordPress'] },
@@ -192,9 +192,22 @@ const works = [
 
 const featuredWorks = works.slice(0, 6).map((work) => ({
   ...work,
-  year: '2026',
+  year: work.year || '2026',
   role: 'UI/UX设计',
 }));
+
+const profileTools = [
+  { label: 'ChatGPT', image: 'profile-logos/chatgpt.svg' },
+  { label: 'Gemini', image: 'profile-logos/gemini.png' },
+  { label: 'Claude', image: 'profile-logos/claude.svg' },
+  { label: 'Sketch', image: 'profile-logos/frame.svg' },
+  { label: 'AI Workflow', image: 'profile-logos/frame-1.svg' },
+  { label: 'Figma', image: 'profile-logos/frame-2.svg' },
+  { label: 'Photoshop', image: 'profile-logos/frame-427325126.svg' },
+  { label: 'Illustrator', image: 'profile-logos/frame-3.svg' },
+  { label: 'After Effects', image: 'profile-logos/frame-427325127.svg' },
+  { label: 'Premiere Pro', image: 'profile-logos/frame-4.svg' },
+];
 
 const impactCards = [
   {
@@ -314,7 +327,9 @@ function Works() {
                 <div className="tags">{w.tags.map((t) => <b key={t}>{t}</b>)}</div>
                 <h3>{w.title}</h3>
                 <p>{w.description}</p>
-                <a className="arrow-link" href={`#/works/${w.slug}`}>查看详情</a>
+                <a className="arrow-link work-arrow-link" href={`#/works/${w.slug}`} aria-label={`查看${w.title}详情`}>
+                  <span className="sr-only">查看详情</span>
+                </a>
               </div>
             </article>
           ))}
@@ -366,8 +381,8 @@ function WorkDetail({ work }) {
 
       <section className="work-detail-main">
         <div className="work-detail-inner">
-          <figure className="work-detail-visual" data-reveal>
-            <img src={`${A}${work.image}`} alt={work.title} />
+          <figure className="work-detail-visual">
+            <img src={`${A}${work.detailImage || work.image}`} alt={work.title} />
           </figure>
         </div>
       </section>
@@ -484,11 +499,34 @@ function Profile() {
           </div>
           <div className="profile-copy" data-reveal>
             <img className="leilei-name" src={`${A}leilei-logo.svg`} alt="leilei" />
-            <h3>网页设计师</h3>
-            <dl><dt>- 关于我</dt><dd>曾在大型企业积累多年项目经验，之后以网页设计师身份独立开展工作。现在主要为中小企业、个人品牌与创业团队提供网站设计、页面制作和品牌视觉落地服务。</dd></dl>
-            <dl><dt>- 专业能力</dt><dd>网站策划与信息架构<br />网页视觉设计 / 前端实现 / WordPress 搭建</dd></dl>
-            <div className="sns"><Instagram size={34} /><span>X</span></div>
-            <Button>联系方式</Button>
+            <dl className="profile-block profile-basic">
+              <dt>- 基本信息</dt>
+              <dd>
+                <span><b>学校:</b> 南京邮电大学</span>
+                <span><b>专业:</b> 网络工程</span>
+                <span><b>出生:</b> 1995.07</span>
+                <span><b>经验:</b> 6年</span>
+                <span><b>籍贯:</b> 南通·如皋</span>
+                <span><b>常住:</b> 南京·江宁</span>
+              </dd>
+            </dl>
+            <dl className="profile-block">
+              <dt>- 关于我</dt>
+              <dd>六年 UI/UX 设计经验，熟悉网页、后台、APP、小程序、可视化大屏等多端产品设计。具备完整项目设计交付经验，能够独立推进界面设计、交互优化、规范沉淀与跨部门协作。熟练运用 AI 工具辅助设计流程，有 AI 工作流落地经验。曾参军两年，执行力强，抗压能力与团队协作意识较好</dd>
+            </dl>
+            <dl className="profile-block">
+              <dt>- 专业能力</dt>
+              <dd>网页视觉设计&nbsp;&nbsp;/&nbsp;&nbsp;复杂B端项目&nbsp;&nbsp;/&nbsp;&nbsp;AI工作流落地&nbsp;&nbsp;/&nbsp;&nbsp;前端实现</dd>
+            </dl>
+          </div>
+        </div>
+        <div className="profile-logo-loop" aria-label="常用工具">
+          <div className="profile-logo-track">
+            {[...profileTools, ...profileTools].map((tool, index) => (
+              <span className="profile-tool-logo" key={`${tool.image}-${index}`}>
+                <img src={`${A}${tool.image}`} alt={tool.label} />
+              </span>
+            ))}
           </div>
         </div>
       </div>
